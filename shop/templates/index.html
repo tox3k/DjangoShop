@@ -1,0 +1,61 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{%static 'css/shop_styles.css'%}" type="text/css">
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{%static 'img/apple-touch-icon.png'%}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{%static 'img/favicon-32x32.png'%}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{%static 'img/favicon-16x16.png'%}">
+    <link rel="manifest" href="{%static 'img/site.webmanifest'%}">
+    <link rel="mask-icon" href="{%static 'img/safari-pinned-tab.svg'%}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+
+</head>
+<body>
+    <div class="all-products">
+        <h1>Все товары:</h1>
+        {% if products %}
+        <ul>
+            {% for product in products %}
+            <li>
+                <a href="#">
+                    <div class="product">
+                        <span class="prod_name">{{product.name}}</span>
+                        <span class="prod_descr">Описание: <br> "{{product.description}}"</span>
+                        <span class="prod_develop">Производитель: <b>{{product.developer.name}}</b> </span>
+                        <span class="prod_count">Остаток: <b>{{product.count}} </b>шт. </span>
+                        <span class="prod_price"> Цена: <b>{{product.price}}</b> рублей</span>
+                    </div>
+                </a>
+                
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>Нет продуктов</p>
+        {% endif %}
+    </div>
+
+
+<form method="post" action="add-developer" class="add-developer">
+    {% csrf_token %}
+    <input type="text" name='name' placeholder="Samsung">
+    <input type="submit" value="Добавить производителя">
+</form>
+
+<form method="post" action="add-product" class="add-product">
+    {% csrf_token %}
+    <input type="text" name='name' placeholder="Iphone 15 PRO MAX 256GB">
+    <select name="developer">
+        {% for developer in developers %}
+        <option>{{developer.name}}</option>
+        {% endfor %}
+    </select>
+    <textarea name="description"></textarea>
+    <input type="number" name="count">
+    <input type="number" name="price">
+    <input type="submit" value="Добавить товар">
+</form>
+</body>
